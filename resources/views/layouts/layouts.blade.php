@@ -45,7 +45,7 @@
                                 </li>
                                 <li ><a  rel="nofollow">{{Auth::User()->name}}
                                     </a></li>
-                                <li><a href="/logout" rel="nofollow">Выйти</a></li>
+                                <li><a href="{{ route('logout') }}" rel="nofollow">Выйти</a></li>
                             @else
 
                                 <li  class="pull-right"><a href="/login" rel="nofollow"> Авторизация </a>

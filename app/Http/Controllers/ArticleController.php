@@ -28,7 +28,12 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $newsAll = $this->article->all();
+        $newsAll = $this->article->with('comment')->get();
+
+        if(!count($newsAll)){
+            $newsAll= '';
+        }
+
         return view('article.index',compact('newsAll'));
     }
 
@@ -84,7 +89,11 @@ class ArticleController extends Controller
     public function show($id)
     {
         $fullNew = $this->article->find($id);
-        $comments = $this->article->find($id)->comment()->where('article_id','=',$id)->get();
+        $comments = $this->article->find($id)->comment()->get();
+
+        if(!count($comments)){
+            $comments ='';
+        }
         return view('article.show', compact('fullNew','comments'));
     }
 

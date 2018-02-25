@@ -14,7 +14,7 @@ class Article extends Model
         return $this->belongsTo(User::Class);
     }
 
-    public function comments()
+    public function comment()
     {
         return $this->hasMany(Comment::Class);
     }

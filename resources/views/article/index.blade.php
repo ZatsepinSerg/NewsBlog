@@ -2,6 +2,7 @@
 @section('content')
 
     <div class="container-fluid">
+        @if(!empty($newsAll))
         @foreach( $newsAll AS $new)
             <div class="row">
                 <div class="col-md-12">
@@ -35,10 +36,14 @@
                 </div>
             </div>
         @endforeach
+        @else
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-9">
+                <h2>Ещё нет новостей</h2>
+            </div>
+        @endif
         <div class="col-md-10">
-            {{-- <div class="col-sm-offset-6 ">
-                 {{$newsAll->render()}}
-             </div>--}}
         </div>
     </div>
 

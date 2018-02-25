@@ -11,24 +11,21 @@
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
 
-/*Route::group([ 'middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function () {
 
-});*/
+    Route::GET('/articles', 'ArticleController@index')->name('home');
+    Route::GET('/articles/create', 'ArticleController@create');
+    Route::GET('/articles/{id}', 'ArticleController@show');
+    Route::POST('/articles', 'ArticleController@store');
+    Route::GET('/user/{id}', 'UserController@show');
 
-Route::GET('/cabinet','ArticleController@index');
+    Route::POST('/comment', 'CommentController@store');
+    Route::POST('article/{articleId}/comment/{parentId}/parent', 'CommentController@parentCommentStore');
 
+    Route::POST('/subscription/{id}', 'SubscriptionController@store');
+});
 
-Route::GET('/articles','ArticleController@index')->name('home');
-Route::GET('/articles/create','ArticleController@create');
-Route::GET('/articles/{id}','ArticleController@show');
-Route::POST('/articles','ArticleController@store');
-Route::GET('/user/{id}','UserController@show');
-
-Route::POST('/subscription/{id}','SubscriptionController@store');
 
 Auth::routes();
 Route::get('/', 'HomeController@index');

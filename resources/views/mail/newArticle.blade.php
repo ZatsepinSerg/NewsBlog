@@ -1,0 +1,13 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<h1>Новые статьи от автора {{$name}}</h1>
+<br>
+{{$messageText}}<br>
+</body>
+</html>

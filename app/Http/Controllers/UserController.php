@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public $user;
+
+    public function __construct()
+    {
+        $this->user = new User();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +53,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $userInfo =  $this->user->find($id);
+
+        return view('user.show', compact('userInfo'));
     }
 
     /**

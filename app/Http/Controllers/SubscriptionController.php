@@ -2,25 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
-use Event;
-use App\User;
+use App\Rules\SubscribeValid;
+use App\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Events\onAddArticleEvent;
 
-
-
-class ArticleController extends Controller
+class SubscriptionController extends Controller
 {
-   public $article;
-   public $user;
-
-    public function __construct()
-    {
-        $this->article = new Article();
-        $this->user = new User();
-    }
     /**
      * Display a listing of the resource.
      *
@@ -28,8 +16,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $newsAll = $this->article->all();
-        return view('article.index',compact('newsAll'));
+        //
     }
 
     /**
@@ -39,7 +26,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('article.create');
+        //
     }
 
     /**
@@ -50,29 +37,25 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate(
-            $request,[
-                'title' =>'required|min:5|max:120|unique:articles,title',
-                'body' => 'required|min:20',
-            ]
-        );
-        $user = Auth::User();
-        $this->article->user_id = $user->id ;
-        $this->article->title = $request->title;
-        $this->article->body = $request->body;
-        $response = $this->article->save();
+        $this->validate($request,[
+            'autorId' => ['required',
+                'integer',
+                'not_in:'. Auth::User()->id,
+                ],
+        ]);
 
+        $requestSubscription = new Subscription();
+        $requestSubscription->user_id = $request->autorId;
+        $requestSubscription->subscription_id = Auth::User()->id;
+        $res = $requestSubscription->save();
 
-        if($response){
-            $this->user->articleCounter($user->id);
-
-            Event::fire(new onAddArticleEvent($this->article,$user));
-            session()->flash('message','Статья успешно добавлена!');
+        if($res){
+            $res ='OK';
         }else{
-            session()->flash('message','произошла ошибка!');
+            $res ='Error';
         }
 
-        return redirect()->home();
+      return response()->json($res, 200);;
     }
 
     /**
@@ -83,9 +66,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $fullNew = $this->article->find($id);
-        $comments = $this->article->find($id)->comment()->where('article_id','=',$id)->get();
-        return view('article.show', compact('fullNew','comments'));
+        //
     }
 
     /**
